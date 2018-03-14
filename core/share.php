@@ -80,11 +80,15 @@
 						echo $call_qrcode;
 						require(THEME_PATH.'/footer.php');
 					}else if (is_in($ext,'FILES_TO_RETURN')!==false||$type=='text/plain'&&empty($ext)){
-						header('Content-type: '.$type.'; charset=utf-8');
-						header('Content-Disposition: attachment; filename="'._basename($f).'"');
-						header('Content-Transfer-Encoding: binary');
-						header('Content-Length: '.filesize($f));
-						readfile($f);
+						if ($ext == 'js' || $ext == 'css' || $ext == 'txt') {
+							echo '<pre>'.htmlspecialchars(file_get_contents($f)).'</pre>';
+						} else {
+							header('Content-type: '.$type.'; charset=utf-8');
+							header('Content-Disposition: attachment; filename="'._basename($f).'"');
+							header('Content-Transfer-Encoding: binary');
+							header('Content-Length: '.filesize($f));
+							readfile($f);
+						}
 					}else{
 						header('Content-type: '.$type);
 						header('Content-Transfer-Encoding: binary');
