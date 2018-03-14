@@ -11,7 +11,7 @@
 		$qrcode='
 		<script src="core/js/qr.js"></script>
 		<script>
-		    function qrcode() {		    	
+		    function qrcode() {
 		    	qr=document.getElementById("qrcode");
 		    	id=qr.getAttribute("data-src");
 		    	var data = "'.$_SESSION["home"].'?f="+id;
@@ -31,17 +31,17 @@
 			set_time_limit (0);
 			store_access_stat($f,$id);
 			$call_qrcode='<img id="qrcode" data-src="'.$id.'" src=""/><script>qrcode();</script>';
-		
+
 			# password mode
 			if (isset($_POST['password'])){
 				# the file id is a md5 password.original id
 				$blured=blur_password($_POST['password']);
-				$sub_id=str_replace($blured,'',$id); # here we try to recover the original id to compare 
+				$sub_id=str_replace($blured,'',$id); # here we try to recover the original id to compare
 			}
 			if (strlen($id)>23 && empty($_POST['password'])){
 				require(THEME_PATH.'/header.php');
 				echo '
-				<div id="lock">					
+				<div id="lock">
 					<p id="message"><img src="'.THEME_PATH.'/img/home/locked.png"/>'.e('This share is protected, please type the correct password:',false).'</p>
 					<form action="index.php?f='.$id.'" method="post">
 						<input type="password" name="password" class="npt"/>
@@ -50,34 +50,35 @@
 				</div>
 				';
 				require(THEME_PATH.'/footer.php');
-			}else if(empty($_POST['password'])||!empty($_POST['password']) && $blured.$sub_id==$id){	
+			}else if(empty($_POST['password'])||!empty($_POST['password']) && $blured.$sub_id==$id){
 				# normal mode or access granted
 				if ($f && is_file($f)){
-	
+
 					# file request => return file according to $behaviour var (see core.php)
 					$type=_mime_content_type($f);
 					$ext=strtolower(pathinfo($f,PATHINFO_EXTENSION));
 					if ($ext=='md'&&!isset($_GET['view'])){
 						//include('core/markdown.php');
-						require(THEME_PATH.'/header_markdown.php');	
+						require(THEME_PATH.'/header_markdown.php');
 						echo $qrcode;
-						echo  parse(url2link(file_get_contents($f)));
+						$Parsedown = new Parsedown();
+						echo $Parsedown->text(file_get_contents($f));
 						echo $call_qrcode;
 						require(THEME_PATH.'/footer_markdown.php');
-						
+
 					}else if ($ext=='m3u'){
-						require(THEME_PATH.'/header.php');	
+						require(THEME_PATH.'/header.php');
 						echo $qrcode;
 						echo str_replace('index.php?f='.$id,'#m3u_link',$templates['dialog_share']);
 						echo $call_qrcode;
 						require(THEME_PATH.'/footer.php');
-						
-					}else if (is_in($ext,'FILES_TO_ECHO')!==false&&!isset($_GET['view'])){		
+
+					}else if (is_in($ext,'FILES_TO_ECHO')!==false&&!isset($_GET['view'])){
 						require(THEME_PATH.'/header.php');
-						echo $qrcode;		
+						echo $qrcode;
 						echo '<pre>'.htmlspecialchars(file_get_contents($f)).'</pre>';
 						echo $call_qrcode;
-						require(THEME_PATH.'/footer.php');						
+						require(THEME_PATH.'/footer.php');
 					}else if (is_in($ext,'FILES_TO_RETURN')!==false||$type=='text/plain'&&empty($ext)){
 						header('Content-type: '.$type.'; charset=utf-8');
 						header('Content-Disposition: attachment; filename="'._basename($f).'"');
@@ -91,13 +92,13 @@
 						# lance le téléchargement des fichiers non affichables
 						header('Content-Disposition: attachment; filename="'._basename($f).'"');
 						readfile($f);
-					}	
+					}
 					# burn access ?
-					burned($id);	
-					exit();	
-				
+					burned($id);
+					exit();
+
 				}else if ($f && is_dir($f)){
-					# folder request: return the folder & subfolders tree 					
+					# folder request: return the folder & subfolders tree
 					$tree=tree($f,return_owner($id),false,true);
 					if (!isset($_GET['rss'])&&!isset($_GET['json'])){ # no html, header etc for rss feed & json data
 						require(THEME_PATH.'/header.php');
@@ -131,7 +132,7 @@
 							}
 							# burn access ?
 							burned($id);
-							exit(json_encode($id_tree)); 
+							exit(json_encode($id_tree));
 						}
 
 						# RSS format of a shared folder (but not for a locked one)
@@ -164,8 +165,8 @@
 					}
 					# burn access ?
 					burned($id);
-					exit();	
-				}else{ 
+					exit();
+				}else{
 					require(THEME_PATH.'/header.php');
 					echo '<div class="error">
 						<br/>
@@ -175,10 +176,10 @@
 					require(THEME_PATH.'/footer.php');
 				}
 
-				
+
 			}
 
-		}else{ 
+		}else{
 			require(THEME_PATH.'/header.php');
 			echo '<div class="link_error">
 				<br/>
@@ -186,8 +187,8 @@
 				<br/>
 			</div>';
 			require(THEME_PATH.'/footer.php');
-		}	
-	
+		}
+
 
 
 ?>
