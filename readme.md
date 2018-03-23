@@ -1,3 +1,12 @@
+# Important note
+
+This repository is a fork of BoZon 2.4 build 15, it includes some differences:
+
+* Fix Markdown rendering.
+* Show text, CSS, JS, image and PDF files directly instead of forcing to download.
+
+The original BoZoN's readme.md is shown below.
+
 # BoZoN
 Official website 	: http://bozon.pw
 Roadmap page 		: http://roadmap.bozon.pw
@@ -5,18 +14,18 @@ Roadmap page 		: http://roadmap.bozon.pw
 
 ## Minimalist Drag & drop file sharing app
 ( http://demo.bozon.pw/ )
-- Install: just unzip on your server; no database/ php 5.2. Then go to index.php?p=admin page and create your login/pass. 
-- Config: just change config.php file. 
+- Install: just unzip on your server; no database/ php 5.2. Then go to index.php?p=admin page and create your login/pass.
+- Config: just change config.php file.
 - Upload a file: go to index.php?p=admin page, connect and then drop files in the dashed area... that's it !
 - Organize files & folders, share them, manage the shared access etc.
 
 The share link is the file link in the admin's view (you can also access it by the button link on the file or the folder.)
 
-## Required 
+## Required
 Php 5 min, php5-gd, ZipArchive
 
 
-## used libraries 
+## used libraries
 I used a few libs I made
 - auto_restrict : to easily lock access to a page and handle basic security features
 - auto_thumbs : a function to generate all the thumbnails
@@ -24,7 +33,7 @@ I used a few libs I made
 - Array2feed.php : a function used to convert an array into a RSS feed without commiting suicide XD
 - "On-the-fly CSS Compression" (a personal modified version of https://gist.github.com/manastungare/2625128)
 
-and 
+and
 
 - sorttables.js (http://www.kryogenix.org/code/browser/sorttable)
 - b-lazy (http://dinbror.dk/blazy)
@@ -45,7 +54,7 @@ All Bozon code and all the personal libs used in it are distributed under AGPL: 
 ## FAQ
 - _I want to add a user_ : There's a [New user] link in the admin's page top menu, click on it and put a login/pass
 - _I want to remove a user_ : Click on the [Users list] link in the admin's page top menu, check the user(s) you want to remove and click on ok.
-- _I've changed some config variables and nothing appends !_ : that's not an issue; all variables are in the Session, so you need to restart chromium/firefox/opera etc to see the changes 
+- _I've changed some config variables and nothing appends !_ : that's not an issue; all variables are in the Session, so you need to restart chromium/firefox/opera etc to see the changes
 - _can't see icons / problems uploading / list refresh problem_ : take a look to access rights (folders / files)
 - _I want to change my password_ : Use the change password function (top menu)
 - _I forgot my password !_ : just use your FTP client and delete «private/auto_restrict*.php» files, then try to login again and create a new login/pass.
@@ -59,6 +68,3 @@ All Bozon code and all the personal libs used in it are distributed under AGPL: 
 
 ## Special thanks
 To Cyrille Borne [ https://github.com/cborne & http://www.cyrille-borne.com ]: without your comments, issues reporting and enhancement ideas this app would never have been so complete ;-)
-
-
-
