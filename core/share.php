@@ -11,16 +11,16 @@
 		$qrcode='
 		<script src="core/js/qr.js"></script>
 		<script>
-		    function qrcode() {
-		    	qr=document.getElementById("qrcode");
-		    	id=qr.getAttribute("data-src");
-		    	var data = "'.$_SESSION["home"].'?f="+id;
-		    	var options = {ecclevel:"M"};
-		    	var url = QRCode.generatePNG(data, options);
-		    	qr.src = url;
-		    	return false;
-		    }
-    	</script>
+				function qrcode() {
+					qr=document.getElementById("qrcode");
+					id=qr.getAttribute("data-src");
+					var data = "'.$_SESSION["home"].'?f="+id;
+					var options = {ecclevel:"M"};
+					var url = QRCode.generatePNG(data, options);
+					qr.src = url;
+					return false;
+				}
+			</script>
 		';
 		$m3u='
 
@@ -57,6 +57,7 @@
 					# file request => return file according to $behaviour var (see core.php)
 					$type=_mime_content_type($f);
 					$ext=strtolower(pathinfo($f,PATHINFO_EXTENSION));
+					$imgPdfTypes = ['image/gif', 'image/png', 'image/jpeg', 'application/pdf'];
 					if ($ext=='md'&&!isset($_GET['view'])){
 						//include('core/markdown.php');
 						require(THEME_PATH.'/header_markdown.php');
@@ -65,7 +66,10 @@
 						echo $Parsedown->text(file_get_contents($f));
 						echo $call_qrcode;
 						require(THEME_PATH.'/footer_markdown.php');
-
+					} else if (in_array($type, $imgPdfTypes)) {
+						header('Content-type: '. $type . '; charset=utf-8');
+						header('Content-Length: ' . filesize($f));
+						readfile($f);
 					}else if ($ext=='m3u'){
 						require(THEME_PATH.'/header.php');
 						echo $qrcode;
